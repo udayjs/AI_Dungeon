@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Genre</title>
+    <link rel="stylesheet" href="choosegenre.css">
+</head>
+<body>
+    <header class="header"></header>
+    <div class="box">
+        <h1>Choose Genres</h1>
+        <h2>📽 Choose or enter one or multiple genres 📽</h2>
+        <br>
+        
+        <div class="search-bar-container" id="search-bar-container"></div>
+        
+        <div class="genre-buttons">
+            <button class="genre-button" id="genre-fantasy">Fantasy</button>
+            <button class="genre-button" id="genre-sci-fi">Sci-fi</button>
+            <button class="genre-button" id="genre-mystery">Mystery</button>
+            <button class="genre-button" id="genre-thriller">Thriller</button>
+            <button class="genre-button" id="genre-horror">Horror</button>
+            <button class="genre-button" id="genre-romance">Romance</button>
+            <button class="genre-button" id="genre-adventure">Adventure</button>
+            <button class="genre-button" id="genre-crime">Crime</button>
+            <button class="genre-button" id="genre-wholesome">Wholesome</button>
+            <button class="genre-button" id="genre-dystopian">Dystopian</button>
+            <button class="genre-button" id="genre-steampunk">Steampunk</button>
+            <button class="genre-button" id="genre-cyberpunk">Cyberpunk</button>
+        </div>
+        <div>
+            <a href="tones.html" class="next">Next</a>
+        </div>
+    </div>
+    <footer class="footer"></footer>
+
+    <script>
+        const genreButtons = document.querySelectorAll('.genre-button');
+        const searchBarContainer = document.getElementById('search-bar-container');
+        let selectedCount = 0;
+
+        genreButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const genre = this.textContent;
+                this.classList.toggle('active');
+
+                if (this.classList.contains('active')) {
+                    addGenreToSearchBar(genre);
+                    selectedCount++;
+                } else {
+                    removeGenreFromSearchBar(genre);
+                    selectedCount--;
+                }
+
+                selectedCountElement.textContent = selectedCount;
+            });
+        });
+
+        function addGenreToSearchBar(genre) {
+            // Check if the genre already exists to avoid duplicates
+            if (!Array.from(searchBarContainer.children).some(btn => btn.textContent === genre)) {
+                const genreButton = document.createElement('button');
+                genreButton.textContent = genre;
+                genreButton.onclick = () => removeGenreFromSearchBar(genre, true);
+                searchBarContainer.appendChild(genreButton);
+            }
+        }
+
+        function removeGenreFromSearchBar(genre, fromButton = false) {
+            // Remove the genre from the search bar
+            const buttons = Array.from(searchBarContainer.children);
+            buttons.forEach(btn => {
+                if (btn.textContent === genre) {
+                    searchBarContainer.removeChild(btn);
+                }
+            });
+
+            // Unhighlight the genre button if removed from the search bar
+            if (fromButton) {
+                const genreButton = Array.from(genreButtons).find(btn => btn.textContent === genre);
+                if (genreButton) {
+                    genreButton.classList.remove('active');
+                    selectedCount--;
+                    selectedCountElement.textContent = selectedCount;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
